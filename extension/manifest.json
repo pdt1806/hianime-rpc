@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "Aniwatch RPC",
+  "description": "You watch anime on Aniwatch.to? This extension will show you what you're watching on Discord!",
+  "version": "1.0",
+  "icons": {
+    "16": "img/icon.png",
+    "32": "img/icon.png",
+    "48": "img/icon.png",
+    "128": "img/icon.png"
+  },
+  "permissions": ["tabs", "storage", "webNavigation"],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.aniwatch.to/*"],
+      "js": ["content.js"]
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "host_permissions": ["*://*/*"]
+}
