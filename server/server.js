@@ -38,7 +38,6 @@ app.listen(port, () => {
 
 const runRpc = async (data) => {
   if (!data.status) {
-    // TODO: turn off other tabs without turning off the rpc
     console.log("[RPC] Stopped!");
     if (watching) {
       try {
@@ -84,6 +83,7 @@ const runRpc = async (data) => {
     }
 
     RPC.on("ready", () => {
+      console.log("[RPC] Started!");
       setActivity();
     });
 

@@ -3,6 +3,7 @@ var appId = "";
 var watching = false;
 var title = "";
 var url = "";
+var titleTemp = "";
 
 async function getStoredData() {
   return new Promise((resolve) => {
@@ -16,12 +17,10 @@ async function getStoredData() {
             function () {}
           );
         }
-
         appId = result.aniwatch_appid;
         if (!appId) {
           chrome.storage.local.set({ aniwatch_appid: "" }, function () {});
         }
-
         resolve();
       }
     );
@@ -30,26 +29,25 @@ async function getStoredData() {
 
 chrome.runtime.onMessage.addListener(async (message) => {
   await getStoredData();
-  console.log(rpcStatus, appId, watching);
+  title = message.title;
+  url = message.url;
   if (rpcStatus && appId && !watching) {
-    title = message.title;
-    url = message.url;
     startRPC(true, message.title, message.url);
-    watching = true;
   }
 });
 
-chrome.tabs.onRemoved.addListener(function () {
-  watching = false;
-  startRPC(false);
+chrome.tabs.onRemoved.addListener(async function () {
+  stopRPC();
+  if (title !== titleTemp && rpcStatus && appId && watching) {
+    startRPC(false);
+    startRPC(true, title, url);
+  }
 });
 
-chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+chrome.tabs.onUpdated.addListener(async function (tabId, changeInfo, tab) {
   if (changeInfo.status === "complete" && tab.active) {
-    console.log(tab.url);
     if (watching && !tab.url.includes("aniwatch.to/watch")) {
-      watching = false;
-      startRPC(false);
+      stopRPC();
     } else if (
       tab.url.includes("aniwatch.to/watch") &&
       rpcStatus &&
@@ -58,14 +56,25 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
       !!url &&
       !!title
     ) {
-      watching = true;
       startRPC(true, title, url);
     }
   }
 });
 
+const stopRPC = async () => {
+  var activeTab = false;
+  var tabs = await chrome.tabs.query({});
+  tabs.forEach(function (tab) {
+    if (tab.url.includes("aniwatch.to/watch")) activeTab = true;
+  });
+  if (!activeTab) {
+    startRPC(false);
+  }
+};
+
 const startRPC = async (status, title = "", url = "") => {
-  console.log(status);
+  watching = status;
+  titleTemp = title;
   const json = {
     status: status,
     title: title,
