@@ -1,12 +1,11 @@
 var watching = false;
 var registered = false;
-var RPC;
 
 const cheerio = require("cheerio");
 const axios = require("axios");
 
 const DiscordRPC = require("discord-rpc");
-RPC = new DiscordRPC.Client({ transport: "ipc" });
+const RPC = new DiscordRPC.Client({ transport: "ipc" });
 
 const express = require("express");
 const app = express();
@@ -49,29 +48,42 @@ const runRpc = async (data) => {
     }
     return;
   } else if (!!data.title && !watching) {
+    const getImageURL = async (url) => {
+      const response = await await axios.request({
+        method: "GET",
+        url: url,
+        headers: {
+          "User-Agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36",
+        },
+      });
+      const data = cheerio.load(response.data);
+      var imageURL = data(".film-poster-img");
+      imageURL = imageURL["0"]["attribs"]["src"];
+      return imageURL;
+    };
+
     watching = true;
     var title = data.title;
     var url = data.url;
     var appId = data.appId.toString().replace(" ", "");
-
-    //
 
     if (!registered) {
       await DiscordRPC.register(appId);
       registered = true;
     }
 
-    const time = Date.now();
-
-    // await getEpisode(url);
+    const imageURL = await getImageURL(url);
 
     async function setActivity() {
       RPC.setActivity({
         details: `Watching ${title}`,
-        startTimestamp: time,
-        largeImageKey:
-          "https://qph.cf2.quoracdn.net/main-qimg-51d20a352814adc74edda248a01f8b5d-lq",
-        largeImageText: "Watching on Aniwatch.to",
+        startTimestamp: new Date(),
+        largeImageKey: imageURL,
+        largeImageText: title,
+        smallImageKey:
+          "https://lh3.googleusercontent.com/pw/AIL4fc8KM5Y4Mz04sX_rAxSS8B7I4klceLU9ETvGfVYY-QGkuHyeiXimJ-fZgJNoZa4edF3Uyr7M2Ym5d6NDIp4ZxjL5EnVRE0FpCADShCFkgxDz6pdaqiI=w2400",
+        smallImageText: "Aniwatch.to",
         instance: false,
         buttons: [
           {
@@ -83,7 +95,7 @@ const runRpc = async (data) => {
     }
 
     RPC.on("ready", () => {
-      console.log("[RPC] Started!");
+      console.log("[RPC] OK!");
       setActivity();
     });
 
