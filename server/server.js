@@ -9,7 +9,7 @@ const RPC = new DiscordRPC.Client({ transport: "ipc" });
 
 const express = require("express");
 const app = express();
-const port = 2021;
+const port = 505;
 
 app.use((req, res, next) => {
   res.setHeader(

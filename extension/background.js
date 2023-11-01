@@ -82,7 +82,7 @@ const startRPC = async (status, title = "", url = "") => {
     appId: appId,
   };
   try {
-    fetch("http://localhost:2021/", {
+    fetch("http://localhost:505/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

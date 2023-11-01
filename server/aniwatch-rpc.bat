@@ -1,1 +1,1 @@
-pm2 start server.js --silent
+pm2 start server.js --silent --name aniwatch-rpc
