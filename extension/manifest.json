@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Aniwatch RPC",
-  "description": "You watch anime on Aniwatch.to? This extension will show you what you're watching on Discord!",
-  "version": "1.1.0",
+  "name": "HiAnime RPC",
+  "description": "You watch anime on HiAnime.to? This extension will show you what you're watching on Discord!",
+  "version": "1.2.0",
   "icons": {
     "16": "img/icon.png",
     "32": "img/icon.png",
@@ -16,7 +16,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://*.aniwatch.to/*"],
+      "matches": ["*://*.hianime.to/*"],
       "js": ["content.js"]
     }
   ],

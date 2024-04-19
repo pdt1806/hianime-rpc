@@ -12,10 +12,7 @@ const app = express();
 const port = 505;
 
 app.use((req, res, next) => {
-  res.setHeader(
-    "Access-Control-Allow-Origin",
-    "chrome-extension://ombebikgpmfpkmmoglfpbgefcomjmfob"
-  );
+  res.setHeader("Access-Control-Allow-Origin", "chrome-extension://bonidkfienomiapbfihigglhmdbibkjn");
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
   res.header("Access-Control-Allow-Headers", "Content-Type");
   next();
@@ -30,9 +27,7 @@ app.post("/", (req, res) => {
 
 app.listen(port, () => {
   console.clear();
-  console.log(
-    `Aniwatch Discord Rich Presence Server listening on http://localhost:${port}`
-  );
+  console.log(`HiAnime Discord Rich Presence Server listening on http://localhost:${port}`);
 });
 
 const runRpc = async (data) => {
@@ -81,9 +76,8 @@ const runRpc = async (data) => {
         startTimestamp: new Date(),
         largeImageKey: imageURL,
         largeImageText: title,
-        smallImageKey:
-          "https://lh3.googleusercontent.com/pw/AIL4fc8KM5Y4Mz04sX_rAxSS8B7I4klceLU9ETvGfVYY-QGkuHyeiXimJ-fZgJNoZa4edF3Uyr7M2Ym5d6NDIp4ZxjL5EnVRE0FpCADShCFkgxDz6pdaqiI=w2400",
-        smallImageText: "Aniwatch.to",
+        smallImageKey: "https://hianime.to/images/icons-512.png",
+        smallImageText: "HiAnime.to",
         instance: false,
         buttons: [
           {

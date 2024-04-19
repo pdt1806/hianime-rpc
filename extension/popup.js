@@ -7,25 +7,19 @@ var appId;
 
 async function getStoredData() {
   return new Promise((resolve) => {
-    chrome.storage.local.get(
-      ["aniwatch_rpc_status", "aniwatch_appid"],
-      function (result) {
-        rpcStatus = result.aniwatch_rpc_status;
-        if (!rpcStatus) {
-          chrome.storage.local.set(
-            { aniwatch_rpc_status: false },
-            function () {}
-          );
-        }
-
-        appId = result.aniwatch_appid;
-        if (!appId) {
-          chrome.storage.local.set({ aniwatch_appid: "" }, function () {});
-        }
-
-        resolve();
+    chrome.storage.local.get(["hianime_rpc_status", "hianime_appid"], function (result) {
+      rpcStatus = result.hianime_rpc_status;
+      if (!rpcStatus) {
+        chrome.storage.local.set({ hianime_rpc_status: false }, function () {});
       }
-    );
+
+      appId = result.hianime_appid;
+      if (!appId) {
+        chrome.storage.local.set({ hianime_appid: "" }, function () {});
+      }
+
+      resolve();
+    });
   });
 }
 
@@ -43,21 +37,18 @@ async function validateAppId() {
     await sleep(1000);
     document.getElementById("appIdIndicator").classList.add("hide");
   };
-  if (
-    (!value.length <= 19 && !value.length >= 17) ||
-    !value.match(/^[0-9]+$/)
-  ) {
+  if ((!value.length <= 19 && !value.length >= 17) || !value.match(/^[0-9]+$/)) {
     await procedure(false);
     return;
   }
   appId = value;
-  chrome.storage.local.set({ aniwatch_appid: value }, function () {});
+  chrome.storage.local.set({ hianime_appid: value }, function () {});
   await procedure(true);
 }
 
 const updateRPCStatus = async () => {
   var status = document.getElementById("rpcStatus").checked;
-  chrome.storage.local.set({ aniwatch_rpc_status: status }, function () {});
+  chrome.storage.local.set({ hianime_rpc_status: status }, function () {});
   rpcStatus = status;
 };
 
@@ -66,7 +57,5 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (rpcStatus) document.getElementById("rpcStatus").checked = rpcStatus;
   if (appId) document.getElementById("appIdInput").value = appId;
   document.querySelector("#saveAppId").addEventListener("click", validateAppId);
-  document
-    .querySelector("#rpcStatus")
-    .addEventListener("click", updateRPCStatus);
+  document.querySelector("#rpcStatus").addEventListener("click", updateRPCStatus);
 });

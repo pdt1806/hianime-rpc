@@ -7,23 +7,17 @@ var titleTemp = "";
 
 async function getStoredData() {
   return new Promise((resolve) => {
-    chrome.storage.local.get(
-      ["aniwatch_rpc_status", "aniwatch_appid"],
-      function (result) {
-        rpcStatus = result.aniwatch_rpc_status;
-        if (!rpcStatus) {
-          chrome.storage.local.set(
-            { aniwatch_rpc_status: false },
-            function () {}
-          );
-        }
-        appId = result.aniwatch_appid;
-        if (!appId) {
-          chrome.storage.local.set({ aniwatch_appid: "" }, function () {});
-        }
-        resolve();
+    chrome.storage.local.get(["hianime_rpc_status", "hianime_appid"], function (result) {
+      rpcStatus = result.hianime_rpc_status;
+      if (!rpcStatus) {
+        chrome.storage.local.set({ hianime_rpc_status: false }, function () {});
       }
-    );
+      appId = result.hianime_appid;
+      if (!appId) {
+        chrome.storage.local.set({ hianime_appid: "" }, function () {});
+      }
+      resolve();
+    });
   });
 }
 
@@ -46,16 +40,9 @@ chrome.tabs.onRemoved.addListener(async function () {
 
 chrome.tabs.onUpdated.addListener(async function (tabId, changeInfo, tab) {
   if (changeInfo.status === "complete" && tab.active) {
-    if (watching && !tab.url.includes("aniwatch.to/watch")) {
+    if (watching && !tab.url.includes("hianime.to/watch")) {
       stopRPC();
-    } else if (
-      tab.url.includes("aniwatch.to/watch") &&
-      rpcStatus &&
-      appId &&
-      !watching &&
-      !!url &&
-      !!title
-    ) {
+    } else if (tab.url.includes("hianime.to/watch") && rpcStatus && appId && !watching && !!url && !!title) {
       startRPC(true, title, url);
     }
   }
@@ -65,7 +52,7 @@ const stopRPC = async () => {
   var activeTab = false;
   var tabs = await chrome.tabs.query({});
   tabs.forEach(function (tab) {
-    if (tab.url.includes("aniwatch.to/watch")) activeTab = true;
+    if (tab.url.includes("hianime.to/watch")) activeTab = true;
   });
   if (!activeTab) {
     startRPC(false);

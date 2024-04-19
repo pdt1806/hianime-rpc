@@ -1,7 +1,7 @@
 {
-  "name": "aniwatch-rpc",
-  "version": "1.0.0",
-  "description": "You watch anime on Aniwatch.to? This extension will show you what you're watching on Discord!",
+  "name": "hianime-rpc",
+  "version": "1.2.0",
+  "description": "You watch anime on HiAnime.to? This extension will show you what you're watching on Discord!",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
