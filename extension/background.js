@@ -6,19 +6,13 @@ var titleTemp = "";
 
 async function getStoredData() {
   return new Promise((resolve) => {
-    chrome.storage.local.get(
-      ["hianime_rpc_status", "hianime_appid"],
-      function (result) {
-        rpcStatus = result.hianime_rpc_status;
-        if (!rpcStatus) {
-          chrome.storage.local.set(
-            { hianime_rpc_status: false },
-            function () {}
-          );
-        }
-        resolve();
+    chrome.storage.local.get(["hianime_rpc_status", "hianime_appid"], function (result) {
+      rpcStatus = result.hianime_rpc_status;
+      if (!rpcStatus) {
+        chrome.storage.local.set({ hianime_rpc_status: false }, function () {});
       }
-    );
+      resolve();
+    });
   });
 }
 
@@ -43,13 +37,7 @@ chrome.tabs.onUpdated.addListener(async function (tabId, changeInfo, tab) {
   if (changeInfo.status === "complete" && tab.active) {
     if (watching && !tab.url.includes("hianime.to/watch")) {
       stopRPC();
-    } else if (
-      tab.url.includes("hianime.to/watch") &&
-      rpcStatus &&
-      !watching &&
-      !!url &&
-      !!title
-    ) {
+    } else if (tab.url.includes("hianime.to/watch") && rpcStatus && !watching && !!url && !!title) {
       startRPC(true, title, url);
     }
   }
@@ -75,7 +63,7 @@ const startRPC = async (status, title = "", url = "") => {
     url: url,
   };
   try {
-    fetch("http://localhost:2202/", {
+    fetch("http://localhost:22221/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
