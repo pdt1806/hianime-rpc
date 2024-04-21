@@ -9,7 +9,7 @@ const RPC = new DiscordRPC.Client({ transport: "ipc" });
 
 const express = require("express");
 const app = express();
-const port = 505;
+const port = 2202;
 
 const yargs = require("yargs");
 
@@ -39,7 +39,9 @@ app.post("/", (req, res) => {
 
 app.listen(port, () => {
   console.clear();
-  console.log(`HiAnime Discord Rich Presence Server listening on http://localhost:${port}`);
+  console.log(
+    `HiAnime Discord Rich Presence Server listening on http://localhost:${port}`
+  );
 });
 
 const runRpc = async (data) => {

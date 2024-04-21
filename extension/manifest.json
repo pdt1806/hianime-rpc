@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "HiAnime RPC",
   "description": "You watch anime on HiAnime.to? This extension will show you what you're watching on Discord!",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "icons": {
     "16": "img/icon.png",
     "32": "img/icon.png",
