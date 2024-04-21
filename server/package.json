@@ -1,6 +1,6 @@
 {
   "name": "hianime-rpc",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "You watch anime on HiAnime.to? This extension will show you what you're watching on Discord!",
   "main": "main.js",
   "scripts": {
