@@ -1,5 +1,4 @@
 var rpcStatus = false;
-var appId = "";
 var watching = false;
 var title = "";
 var url = "";
@@ -12,10 +11,6 @@ async function getStoredData() {
       if (!rpcStatus) {
         chrome.storage.local.set({ hianime_rpc_status: false }, function () {});
       }
-      appId = result.hianime_appid;
-      if (!appId) {
-        chrome.storage.local.set({ hianime_appid: "" }, function () {});
-      }
       resolve();
     });
   });
@@ -25,14 +20,14 @@ chrome.runtime.onMessage.addListener(async (message) => {
   await getStoredData();
   title = message.title;
   url = message.url;
-  if (rpcStatus && appId && !watching) {
+  if (rpcStatus && !watching) {
     startRPC(true, message.title, message.url);
   }
 });
 
 chrome.tabs.onRemoved.addListener(async function () {
   stopRPC();
-  if (title !== titleTemp && rpcStatus && appId && watching) {
+  if (title !== titleTemp && rpcStatus && watching) {
     startRPC(false);
     startRPC(true, title, url);
   }
@@ -42,7 +37,7 @@ chrome.tabs.onUpdated.addListener(async function (tabId, changeInfo, tab) {
   if (changeInfo.status === "complete" && tab.active) {
     if (watching && !tab.url.includes("hianime.to/watch")) {
       stopRPC();
-    } else if (tab.url.includes("hianime.to/watch") && rpcStatus && appId && !watching && !!url && !!title) {
+    } else if (tab.url.includes("hianime.to/watch") && rpcStatus && !watching && !!url && !!title) {
       startRPC(true, title, url);
     }
   }
@@ -66,7 +61,6 @@ const startRPC = async (status, title = "", url = "") => {
     status: status,
     title: title,
     url: url,
-    appId: appId,
   };
   try {
     fetch("http://localhost:505/", {

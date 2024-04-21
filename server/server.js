@@ -11,8 +11,20 @@ const express = require("express");
 const app = express();
 const port = 505;
 
+const yargs = require("yargs");
+
+const argv = yargs
+  .options({
+    extID: { type: "string", demandOption: true, describe: "Extension ID" },
+    appID: { type: "string", demandOption: true, describe: "App ID" },
+  })
+  .help().argv;
+
+const extID = argv.extID;
+const appID = argv.appID;
+
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "chrome-extension://bonidkfienomiapbfihigglhmdbibkjn");
+  res.setHeader("Access-Control-Allow-Origin", `chrome-extension://${extID}`);
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
   res.header("Access-Control-Allow-Headers", "Content-Type");
   next();
@@ -61,10 +73,9 @@ const runRpc = async (data) => {
     watching = true;
     var title = data.title;
     var url = data.url;
-    var appId = data.appId.toString().replace(" ", "");
 
     if (!registered) {
-      await DiscordRPC.register(appId);
+      await DiscordRPC.register(appID);
       registered = true;
     }
 
@@ -94,7 +105,7 @@ const runRpc = async (data) => {
     });
 
     try {
-      await RPC.login({ clientId: appId });
+      await RPC.login({ clientId: appID });
     } catch (e) {
       console.log("Invalid Application ID.");
     }

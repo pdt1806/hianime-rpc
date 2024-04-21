@@ -36,55 +36,7 @@ header img {
   font-size: 15px;
 }
 
-#appId input {
-  outline: none;
-  text-align: center;
-  border-radius: 12px;
-  border: solid 1px grey;
-  padding: 3px 0 3px 0;
-}
-
-#appIdIndicator {
-  text-align: center;
-  font-size: 16px;
-  font-weight: 300;
-  margin: 10px 0 5px 0;
-}
-
-.green {
-  color: green;
-}
-
-.red {
-  color: red;
-}
-
-.hide {
-  visibility: hidden;
-}
-
-#appId #saveAppId {
-  font-family: "REM", sans-serif;
-  font-weight: 300;
-  margin-left: 5px;
-  border-radius: 12px;
-  border: solid 1px grey;
-  background-color: #fafafa;
-  outline: none;
-  padding: 3px 7px 3px 7px;
-}
-
-#appId #saveAppId:active {
-  background-color: #ebebeb;
-}
-
-#appId p {
-  font-weight: 300;
-  font-size: 15px;
-}
-
-footer,
-#appId {
+footer {
   text-align: center;
 }
 
